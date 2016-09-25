@@ -1,0 +1,17 @@
+# files to ignore
+target/
+*.class/
+*.cache
+resources/
+*.iml
+*.ipr
+*.iws
+.idea/
+out
+.DS_Store
+META-INF
+project/
+scala-2.11/
+resources/
+java/
+test/
