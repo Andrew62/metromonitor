@@ -68,6 +68,9 @@ class Metro(url: String) {
     // Parse xml and split on "item" tag
     val items = XML.loadString(source.mkString) \\ "item"
 
+    // close the xml file
+    source.close()
+
     if (items.length > 0){
       val randomItem = this.getRandomItem(items)
 

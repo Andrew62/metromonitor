@@ -16,11 +16,14 @@ object MetroMonitor {
     // Load metro URL from resources just so we don't have a long URL here
     val metroUrl  = filepathToString("metro-url.txt")
 
+    // Phrases stored in a line delimited file
+    val phrases = loadPhrases("phrases.txt")
+
     // Create an object to check the metro feed
     val metroMonitor = new Metro(metroUrl)
 
     // send a tweet if there is a delay
-    val chirper = new Chirper(keys)
+    val chirper = new Chirper(keys, phrases)
 
     // Check wmata rss feed ang get an event
     val event = metroMonitor.getEvent()

@@ -12,13 +12,14 @@ import twitter4j.TwitterFactory
 import twitter4j.conf.ConfigurationBuilder
 
 
-class Chirper(keys: Map[String, String]) {
+class Chirper(keys: Map[String, String], phrases: Array[String]) {
 
   // Load keys from file. Don't want to store them in code
   val consumerKey = keys.get("consumer-key").get
   val consumerSecret = keys.get("consumer-secret").get
   val accessToken = keys.get("access-token").get
   val tokenSecret = keys.get("token-secret").get
+  val inPhrases = phrases
 
   /**
     * chirp: When a string is passed, it will be published
@@ -45,22 +46,9 @@ class Chirper(keys: Map[String, String]) {
     * @return a phrase
     */
   def catchPhrase(metroLine: String): String = {
-    val cannedPhrases = Array(
-      s"Get it together @wmata! Delays on the $metroLine line... #Metropocalypse #wmata",
-      s"I was going to ride Metro but there's a problem with the $metroLine line @wmata #Metropocalypse #wmata",
-      s"Stuck because of issues with the $metroLine line. Thanks @wmata #Metropocalypse #wmata",
-      s"$metroLine line special today @wmata #Metropocalypse #wmata",
-      s"@wmata just sitting here waiting for the $metroLine line... #wmata #Metropocalypse",
-      s"@wmata <insert canned upset phrase> $metroLine line again #wmata #Metropocalypse",
-      s"Where's Martin DiCaro? Issues with the $metroLine line #wmata #Metropocalypse",
-      s"Problem with the $metroLine line. Taking the shoelace express #wmata #Metropocalypse",
-      s"When you're waiting for the $metroLine line and it's delayed... @wmata #wmata",
-      s"@wmata Here we go again with the $metroLine line #wmata #Metropocalypse",
-      s"@wmata Somewhere someone is waiting too long for the $metroLine line #Metropocalypse",
-      s"@wmata late again. #Metropocalypse #wmata"
-    )
     val rand = new Random(System.currentTimeMillis())
-    val randomIndex = rand.nextInt(cannedPhrases.length)
-    return cannedPhrases(randomIndex)
+    val randomIndex = rand.nextInt(this.inPhrases.length)
+    val phrase = this.inPhrases(randomIndex)
+    return phrase.format(metroLine)
   }
 }
