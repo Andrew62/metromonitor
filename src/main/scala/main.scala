@@ -10,6 +10,13 @@ import Helper._
 object MetroMonitor {
   def main(args: Array[String]): Unit ={
 
+    // Read the first commandline arg. can only be true or false
+    val test = if (args.isEmpty) false else args(0).toBoolean
+
+    if (test == true){
+      println("\n\nTesting\n\n")
+    }
+
     // Load key file from resources
     val keys = stringToMap(filepathToString("twitterkeys.json"))
 
@@ -25,8 +32,8 @@ object MetroMonitor {
     // send a tweet if there is a delay
     val chirper = new Chirper(keys, phrases)
 
-    // Check wmata rss feed ang get an event
-    val event = metroMonitor.getEvent()
+    // if testing is true we'll just pull a canned event
+    val event = if (test == true) metroMonitor.getTestEvent() else metroMonitor.getEvent()
 
     if (event.isEmpty == false){
       // get the line that's having issues
@@ -35,8 +42,10 @@ object MetroMonitor {
       // drop it into a canned phrase. Could use more
       val phrase = chirper.catchPhrase(metroLine)
 
-      // Tweet it!
-      chirper.chirp(phrase)
+      if (test == false) {
+        // Tweet it!
+        chirper.chirp(phrase)
+      }
 
       println(phrase)
 
