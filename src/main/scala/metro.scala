@@ -10,6 +10,7 @@ import scala.xml._
 import scalaj.http._
 import scala.io.Source
 import java.util.Random
+import Helper.filepathToString
 
 
 class Metro(url: String) {
@@ -63,13 +64,10 @@ class Metro(url: String) {
 
   def getTestEvent(): Map[String, String] = {
     // function used for testing. Loads cached xml
-    val source = Source.fromFile(getClass.getResource("/status.xml").getFile())
+    val source = filepathToString("status.xml")
 
     // Parse xml and split on "item" tag
-    val items = XML.loadString(source.mkString) \\ "item"
-
-    // close the xml file
-    source.close()
+    val items = XML.loadString(source) \\ "item"
 
     if (items.length > 0){
       val randomItem = this.getRandomItem(items)
