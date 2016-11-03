@@ -42,16 +42,22 @@ class Metro(url: String) {
   }
 
   def parseItem(item: Node): Map[String, String] = {
+
+    // name of the metro line
     var title = ((item \ "title").text.trim)
 
+    // sometimes there's more than one line in the status
     if (title.contains("\\")){
       title = title.split("\\")(0).trim
     } else if (title.contains(",")){
       title = title.split(",")(0).trim
     }
 
+    // the line is all upper case initially so we do a simple
+    // transform to make it title case
     title = title.toLowerCase.capitalize
 
+    // parse the item into a key-value map
     return Map(
       "title"     -> title,
       "link"      -> (item \ "link").text.trim,
